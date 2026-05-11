@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Mail, Code2, Users, Check, X, Phone } from 'lucide-react'
+import emailjs from 'emailjs-com'
 import SectionTitle from './SectionTitle'
 import GlassCard from './GlassCard'
 import { profile } from '../data/portfolio'
@@ -12,6 +13,9 @@ export default function Contact() {
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
+  const emailJsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'SUgaCjGLeiQquz9wx'
+  const emailJsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_wpll3ks'
+  const emailJsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_ghi3thx'
   const defaultApiBaseUrl = 'https://my-protfolio-backend-ke1g.onrender.com'
   const apiBaseUrl = import.meta.env.VITE_API_URL?.toString().replace(/\/$/, '') || defaultApiBaseUrl
 
@@ -40,6 +44,25 @@ export default function Contact() {
     setShowSuccess(false)
 
     try {
+      if (emailJsPublicKey && emailJsServiceId && emailJsTemplateId) {
+        await emailjs.send(
+          emailJsServiceId,
+          emailJsTemplateId,
+          {
+            from_name: name,
+            from_email: email,
+            message,
+            reply_to: email,
+          },
+          emailJsPublicKey,
+        )
+
+        setShowSuccess(true)
+        setFormData({ name: '', email: '', message: '' })
+        setTimeout(() => setShowSuccess(false), 4000)
+        return
+      }
+
       const endpoint = apiBaseUrl ? `${apiBaseUrl}/api/send-email` : '/api/send-email'
       const controller = new AbortController()
       const timeoutId = window.setTimeout(() => controller.abort(), 15000)
@@ -72,6 +95,8 @@ export default function Contact() {
       console.error('Server email send failed:', error)
       if (error?.name === 'AbortError') {
         setErrorMessage('Request timed out. The backend is taking too long to respond.')
+      } else if (error?.text) {
+        setErrorMessage('Email service rejected the message. Please verify the EmailJS template settings.')
       } else if (error?.message === 'Failed to fetch') {
         setErrorMessage('Cannot reach the backend server right now. Please try again in a moment.')
       } else {
