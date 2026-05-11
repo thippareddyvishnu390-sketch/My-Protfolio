@@ -20,6 +20,10 @@ body,
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
+  /* GPU acceleration and smooth scrolling */
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 body {
@@ -30,6 +34,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Improve scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
 }
 
 h1,

@@ -8,6 +8,16 @@ const devPort = Number(process.env.VITE_DEV_PORT || 5173)
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('framer-motion')) return 'framer-motion'
+          if (id.includes('emailjs-com')) return 'emailjs'
+        },
+      },
+    },
+  },
   server: {
     port: devPort,
     proxy: {

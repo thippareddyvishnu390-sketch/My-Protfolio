@@ -3,8 +3,11 @@ import { ArrowDown, ArrowUpRight, Download, Mail } from 'lucide-react'
 import GlassCard from './GlassCard'
 import { profile, socialLinks } from '../data/portfolio'
 import profileImage from './vishnu.jpg.jpeg'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
     <section
       id="home"
@@ -14,23 +17,29 @@ export default function Hero() {
 
       <div className="mx-auto grid w-full max-w-6xl gap-8 md:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <motion.div
-          initial={{ opacity: 0, y: 28, scale: 0.96 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 28, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
+          transition={
+            prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.05 }
+          }
           className="order-1 relative mx-auto w-full max-w-[20rem] sm:max-w-[24rem] lg:order-2 lg:max-w-[28rem]"
         >
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative"
-            style={{ willChange: 'transform' }}
-          >
-            <div className="pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,_rgba(56,189,248,0.35)_0%,_rgba(45,212,191,0.18)_42%,_transparent_72%)] blur-2xl" />
+          <div className="relative" style={!prefersReducedMotion ? { willChange: 'transform' } : {}}>
+            {!prefersReducedMotion && (
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative"
+                style={{ willChange: 'transform' }}
+              >
+                <div className="pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,_rgba(56,189,248,0.35)_0%,_rgba(45,212,191,0.18)_42%,_transparent_72%)] blur-2xl" />
+              </motion.div>
+            )}
 
             <div className="relative rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-[0_26px_65px_rgba(2,6,23,0.5)] backdrop-blur-xl sm:p-4">
               <motion.div
-                whileHover={{ scale: 1.03, y: -3 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
                 className="group relative overflow-hidden rounded-full"
               >
                 <div className="pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(from_180deg_at_50%_50%,rgba(34,211,238,0.9),rgba(45,212,191,0.75),rgba(56,189,248,0.9),rgba(34,211,238,0.9))] opacity-80 blur-[2px]" />
@@ -47,13 +56,13 @@ export default function Hero() {
                 </div>
               </motion.div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
           className="relative z-10 order-2 lg:order-1"
         >
           <h1 className="mt-5 text-3xl font-extrabold leading-tight text-white sm:mt-6 sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -135,9 +144,11 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={
+            prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }
+          }
           className="relative z-10 order-3 lg:order-3"
         >
           <GlassCard className="relative overflow-hidden rounded-3xl p-5 sm:p-7 lg:p-8">
@@ -167,9 +178,11 @@ export default function Hero() {
 
       <motion.a
         href="#about"
-        initial={{ opacity: 0, y: -8 }}
+        initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
+        transition={
+          prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4 }
+        }
         className="absolute bottom-4 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-slate-300 sm:inline-flex"
       >
         Scroll
