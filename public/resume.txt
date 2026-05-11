@@ -1,0 +1,35 @@
+Vishnu
+Full Stack & Automation Developer
+
+Contact
+Email: thippareddyvishnu390@gmail.com
+Location: India
+Phone: +91 8121380186
+
+Professional Summary
+Full Stack & Automation Developer with 4+ years building production web applications and automation workflows. Core strengths include frontend engineering with React, backend services with Node.js, CI/CD and Docker-based deployments, and workflow automation using n8n. Exploring generative AI and ML integrations to add intelligent features to products.
+
+Core Skills
+- React, JavaScript, HTML, CSS, Tailwind
+- Node.js, Express, SQL / PostgreSQL
+- Git, GitHub, GitHub Actions
+- n8n automation and workflow integrations
+- Docker, Vercel, Cloudflare
+- Generative AI / Prompting (beginner)
+
+Experience
+- Senior Frontend Developer — Tech Innovations Inc (2023 - Present)
+  Leading frontend architecture for enterprise SaaS applications using React and Tailwind CSS.
+
+- Full Stack Developer — Digital Solutions Ltd (2021 - 2023)
+  Built and maintained full-stack applications using React, Node.js, and PostgreSQL.
+
+- Junior Developer — Startup Hub (2020 - 2021)
+  Developed responsive web applications and followed Agile development practices.
+
+Education
+- Bachelor of Technology in Computer Science — University of Technology (2020)
+- Full Stack Web Development Bootcamp — Code Academy (2021)
+
+Notes
+Projects page is intentionally empty until projects are ready to be shared. Contact me for code samples or demos.
