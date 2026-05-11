@@ -5,22 +5,7 @@ const nodemailer = require('nodemailer')
 
 const app = express()
 const PORT = process.env.PORT || 3001
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'https://my-protfolio-lime-two.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:5178',
-].filter(Boolean)
-
-app.use(cors({
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true)
-    }
-
-    return callback(new Error(`CORS blocked for origin: ${origin}`))
-  },
-}))
+app.use(cors())
 app.use(express.json())
 
 // Basic health
