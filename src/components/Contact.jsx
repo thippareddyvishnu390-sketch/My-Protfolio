@@ -12,7 +12,8 @@ export default function Contact() {
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const apiBaseUrl = import.meta.env.VITE_API_URL?.toString().replace(/\/$/, '') || ''
+  const defaultApiBaseUrl = 'https://my-protfolio-backend-ke1g.onrender.com'
+  const apiBaseUrl = import.meta.env.VITE_API_URL?.toString().replace(/\/$/, '') || defaultApiBaseUrl
 
   const handleChange = (e) => {
     const { name, value } = e.target
