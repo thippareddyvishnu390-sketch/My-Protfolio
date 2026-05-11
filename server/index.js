@@ -11,6 +11,49 @@ app.use(express.json())
 // Basic health
 app.get('/api/health', (req, res) => res.json({ ok: true }))
 
+function createTransporter({ port, secure }) {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  })
+}
+
+async function sendWithFallback(mailOptions) {
+  const configuredPort = Number(process.env.SMTP_PORT) || 587
+  const configuredSecure = process.env.SMTP_SECURE === 'true'
+  const fallbackPort = configuredSecure ? 587 : 465
+  const fallbackSecure = !configuredSecure
+
+  const transports = [
+    { port: configuredPort, secure: configuredSecure },
+    { port: fallbackPort, secure: fallbackSecure },
+  ]
+
+  let lastError
+
+  for (const transportConfig of transports) {
+    try {
+      const transporter = createTransporter(transportConfig)
+      return await transporter.sendMail(mailOptions)
+    } catch (err) {
+      lastError = err
+      if (err && err.code !== 'ETIMEDOUT' && err.code !== 'ECONNREFUSED') {
+        throw err
+      }
+    }
+  }
+
+  throw lastError
+}
+
 app.post('/api/send-email', async (req, res) => {
   try {
     const { name, email, message } = req.body || {}
@@ -22,20 +65,6 @@ app.post('/api/send-email', async (req, res) => {
       })
     }
 
-    // Create transporter from env (SMTP)
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: process.env.SMTP_SECURE === 'true',
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
-
     const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.SMTP_USER,
       to: process.env.EMAIL_TO || process.env.EMAIL_FROM,
@@ -44,7 +73,7 @@ app.post('/api/send-email', async (req, res) => {
       replyTo: email,
     }
 
-    const info = await transporter.sendMail(mailOptions)
+    const info = await sendWithFallback(mailOptions)
     return res.json({ ok: true, info })
   } catch (err) {
     console.error('send-email error', err)
