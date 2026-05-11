@@ -16,11 +16,20 @@ app.post('/api/send-email', async (req, res) => {
     const { name, email, message } = req.body || {}
     if (!name || !email || !message) return res.status(400).json({ error: 'Missing fields' })
 
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      return res.status(503).json({
+        error: 'Mail service is not configured on the server',
+      })
+    }
+
     // Create transporter from env (SMTP)
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT) || 587,
       secure: process.env.SMTP_SECURE === 'true',
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -39,7 +48,15 @@ app.post('/api/send-email', async (req, res) => {
     return res.json({ ok: true, info })
   } catch (err) {
     console.error('send-email error', err)
-    return res.status(500).json({ error: err && err.message ? err.message : 'Server error' })
+    const message = err && err.message ? err.message : 'Server error'
+
+    if (err && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT' || err.code === 'EAUTH')) {
+      return res.status(502).json({
+        error: `Mail delivery failed: ${message}`,
+      })
+    }
+
+    return res.status(500).json({ error: message })
   }
 })
 

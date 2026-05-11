@@ -41,12 +41,21 @@ export default function Contact() {
 
     try {
       const endpoint = apiBaseUrl ? `${apiBaseUrl}/api/send-email` : '/api/send-email'
+      const controller = new AbortController()
+      const timeoutId = window.setTimeout(() => controller.abort(), 15000)
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
-      })
+      let res
+
+      try {
+        res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+          signal: controller.signal,
+        })
+      } finally {
+        window.clearTimeout(timeoutId)
+      }
 
       const payload = await res.json().catch(() => ({}))
       if (!res.ok) {
@@ -61,7 +70,13 @@ export default function Contact() {
       setTimeout(() => setShowSuccess(false), 4000)
     } catch (error) {
       console.error('Server email send failed:', error)
-      setErrorMessage(error && error.message ? `Failed to send message: ${error.message}` : 'Failed to send message — please try again later.')
+      if (error?.name === 'AbortError') {
+        setErrorMessage('Request timed out. The backend is taking too long to respond.')
+      } else if (error?.message === 'Failed to fetch') {
+        setErrorMessage('Cannot reach the backend server right now. Please try again in a moment.')
+      } else {
+        setErrorMessage(error && error.message ? `Failed to send message: ${error.message}` : 'Failed to send message — please try again later.')
+      }
       setShowError(true)
       setTimeout(() => setShowError(false), 4000)
     } finally {
