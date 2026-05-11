@@ -1,6 +1,7 @@
 import { Code2, Menu, X } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -15,6 +16,7 @@ const navItems = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('#home')
+  const isMobile = useIsMobile()
 
   const sectionIds = useMemo(
     () => navItems.map((item) => item.href.replace('#', '')),
@@ -76,7 +78,7 @@ export default function Navbar() {
             <motion.a
               key={item.href}
               href={item.href}
-              whileHover={{ y: -2 }}
+              whileHover={isMobile ? {} : { y: -2 }}
               className={`rounded-full px-3 py-2.5 transition ${
                 active === item.href
                   ? 'bg-cyan-300/20 text-cyan-200'
@@ -108,7 +110,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            transition={{ duration: isMobile ? 0.15 : 0.25, ease: 'easeOut' }}
             className="border-t border-white/10 bg-slate-900/75 px-4 py-4 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-3">
@@ -116,10 +118,14 @@ export default function Navbar() {
                 <motion.a
                   key={item.href}
                   href={item.href}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={isMobile ? { opacity: 1 } : { opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -8 }}
-                  transition={{ delay: index * 0.03, duration: 0.2 }}
+                  exit={isMobile ? { opacity: 1 } : { opacity: 0, x: -8 }}
+                  transition={
+                    isMobile
+                      ? { duration: 0 }
+                      : { delay: index * 0.03, duration: 0.2 }
+                  }
                   className={`rounded-lg px-3 py-3 text-base transition ${
                     active === item.href
                       ? 'bg-cyan-300/20 text-cyan-200'

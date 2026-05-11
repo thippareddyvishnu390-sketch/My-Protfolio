@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, CircleUserRound, Code2, AtSign } from 'lucide-react'
 import { socialLinks } from '../data/portfolio'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const iconMap = {
   GitHub: Code2,
@@ -21,6 +22,7 @@ function scrollToTop() {
 }
 
 export default function Footer() {
+  const isMobile = useIsMobile()
   return (
     <footer className="relative overflow-hidden border-t border-white/10 px-4 py-10 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_10%_15%,_rgba(56,189,248,0.09),_transparent_35%),radial-gradient(circle_at_88%_88%,_rgba(45,212,191,0.08),_transparent_30%)]" />
@@ -34,11 +36,13 @@ export default function Footer() {
                 <motion.a
                   key={item.href}
                   href={item.href}
-                  whileHover={{ y: -2 }}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={isMobile ? {} : { y: -2 }}
+                  initial={isMobile ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                  whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.35 }}
-                  transition={{ duration: 0.28, delay: index * 0.03 }}
+                  transition={
+                    isMobile ? { duration: 0 } : { duration: 0.28, delay: index * 0.03 }
+                  }
                   className="group inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/40 hover:text-cyan-300"
                 >
                   {item.label}
@@ -60,11 +64,13 @@ export default function Footer() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={item.label}
-                    whileHover={{ y: -2, scale: 1.03 }}
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={isMobile ? {} : { y: -2, scale: 1.03 }}
+                    initial={isMobile ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                    whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.35 }}
-                    transition={{ duration: 0.28, delay: index * 0.05 }}
+                    transition={
+                      isMobile ? { duration: 0 } : { duration: 0.28, delay: index * 0.05 }
+                    }
                     className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:border-cyan-300/50 hover:text-cyan-300"
                   >
                     <Icon size={16} />
