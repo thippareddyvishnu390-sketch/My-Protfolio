@@ -49,11 +49,10 @@ export default function Contact() {
           emailJsServiceId,
           emailJsTemplateId,
           {
-            to_email: profile.email,
-            user_name: name,
-            user_email: email,
+            from_name: name,
+            from_email: email,
             message: message,
-            user_message: message,
+            to_email: profile.email,
           },
           emailJsPublicKey,
         )
