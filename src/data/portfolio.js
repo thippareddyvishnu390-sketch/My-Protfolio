@@ -1,6 +1,7 @@
 import { Code, GitBranch, Users, Globe, Workflow, Sparkles, Cloud } from 'lucide-react'
 import IBMPdf from '../assets/certs/IBMDesign20260125-31-kfg1r4 (1).pdf'
 import GenAIPdf from '../assets/certs/GettingStartedwithGenerativeAI_Badge20260216-35-z3bdai (1).pdf'
+import AIWebDevPdf from '../assets/certs/AI Web Development Internship_internship_certificate.pdf'
 
 export const profile = {
   name: 'Vishnu',
@@ -78,6 +79,14 @@ export const certifications = [
     issuedDate: 'Feb 2026',
     image: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop',
     verifyUrl: GenAIPdf,
+  },
+  {
+    id: 3,
+    title: 'AI Web Development Internship',
+    issuer: 'AI Web Development',
+    issuedDate: '2026',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=600&h=400&fit=crop',
+    verifyUrl: AIWebDevPdf,
   },
 ]
 
