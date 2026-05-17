@@ -5,8 +5,13 @@ import emailjs from 'emailjs-com'
 import SectionTitle from './SectionTitle'
 import GlassCard from './GlassCard'
 import { profile } from '../data/portfolio'
+import { useIsMobile } from '../hooks/useIsMobile'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export default function Contact() {
+  const isMobile = useIsMobile()
+  const prefersReducedMotion = useReducedMotion()
+  const disableAnimations = isMobile || prefersReducedMotion
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -124,12 +129,11 @@ export default function Contact() {
             {/* Email */}
             <motion.a
               href={`mailto:${profile.email}`}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={disableAnimations ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              whileInView={disableAnimations ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.35, delay: 0 }}
+              transition={disableAnimations ? { duration: 0 } : { duration: 0.35, delay: 0 }}
               className="group"
-              style={{ willChange: 'transform, opacity' }}
             >
               <GlassCard className="rounded-2xl p-4 transition hover:border-cyan-400/30 sm:p-6">
                 <div className="flex items-start gap-4">
@@ -149,12 +153,11 @@ export default function Contact() {
             {/* Phone */}
             <motion.a
               href={`tel:${profile.phone}`}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={disableAnimations ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              whileInView={disableAnimations ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
+              transition={disableAnimations ? { duration: 0 } : { duration: 0.35, delay: 0.05 }}
               className="group"
-              style={{ willChange: 'transform, opacity' }}
             >
               <GlassCard className="rounded-2xl p-4 transition hover:border-cyan-400/30 sm:p-6">
                 <div className="flex items-start gap-4">
@@ -176,10 +179,10 @@ export default function Contact() {
               href="https://github.com/thippareddyvishnu390-sketch"
               target="_blank"
               rel="noreferrer"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={disableAnimations ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              whileInView={disableAnimations ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              transition={disableAnimations ? { duration: 0 } : { duration: 0.4, delay: 0.1 }}
               className="group"
             >
               <GlassCard className="rounded-2xl p-4 transition hover:border-cyan-400/30 sm:p-6">
@@ -202,10 +205,10 @@ export default function Contact() {
               href="https://www.linkedin.com/in/vishnu-vardhan-thippareddy-441648379"
               target="_blank"
               rel="noreferrer"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={disableAnimations ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              whileInView={disableAnimations ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              transition={disableAnimations ? { duration: 0 } : { duration: 0.4, delay: 0.2 }}
               className="group"
             >
               <GlassCard className="rounded-2xl p-4 transition hover:border-cyan-400/30 sm:p-6">
@@ -226,10 +229,10 @@ export default function Contact() {
 
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={disableAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            whileInView={disableAnimations ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={disableAnimations ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
             className="lg:col-span-2"
           >
             <GlassCard className="rounded-2xl p-6 sm:p-8">

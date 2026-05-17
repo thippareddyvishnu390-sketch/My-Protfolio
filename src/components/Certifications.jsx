@@ -3,8 +3,13 @@ import { motion } from 'framer-motion'
 import GlassCard from './GlassCard'
 import SectionTitle from './SectionTitle'
 import { certifications } from '../data/portfolio'
+import { useIsMobile } from '../hooks/useIsMobile'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export default function Certifications() {
+  const isMobile = useIsMobile()
+  const prefersReducedMotion = useReducedMotion()
+  const disableAnimations = isMobile || prefersReducedMotion
   return (
     <section id="certifications" className="px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-6xl">
@@ -18,35 +23,41 @@ export default function Certifications() {
           {certifications.map((cert, index) => (
             <motion.div
               key={cert.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={disableAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              whileInView={disableAnimations ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
-              style={{ willChange: 'transform, opacity' }}
+              transition={disableAnimations ? { duration: 0 } : { duration: 0.4, delay: index * 0.06 }}
             >
               <GlassCard className="group h-full overflow-hidden rounded-2xl p-0">
                 <div className="relative h-44 overflow-hidden bg-white/5">
-                  {cert.verifyUrl && String(cert.verifyUrl).toLowerCase().endsWith('.pdf') ? (
-                    <object
-                      data={cert.verifyUrl}
-                      type="application/pdf"
-                      aria-label={cert.title}
-                      className="h-full w-full bg-transparent"
+                  <a
+                    href={cert.verifyUrl ?? cert.image}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={cert.title}
+                    className="block h-full w-full"
+                  >
+                    {cert.verifyUrl && String(cert.verifyUrl).toLowerCase().endsWith('.pdf') ? (
+                      <object
+                        data={cert.verifyUrl}
+                        type="application/pdf"
+                        className="h-full w-full bg-transparent"
                       >
-                      <div className="flex h-full w-full items-center justify-center bg-slate-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M6 2h7l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" />
-                          <path d="M13 3v5h5" fillOpacity="0.15" />
-                        </svg>
-                      </div>
-                    </object>
-                  ) : (
-                    <img
-                      src={cert.image}
-                      alt={cert.title}
-                      className="h-full w-full object-contain object-center transition duration-500 group-hover:scale-105"
-                    />
-                  )}
+                        <div className="flex h-full w-full items-center justify-center bg-slate-900">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 2h7l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" />
+                            <path d="M13 3v5h5" fillOpacity="0.15" />
+                          </svg>
+                        </div>
+                      </object>
+                    ) : (
+                      <img
+                        src={cert.image}
+                        alt={cert.title}
+                        className="h-full w-full object-contain object-center transition duration-500 group-hover:scale-105"
+                      />
+                    )}
+                  </a>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
                 </div>
 
@@ -67,15 +78,19 @@ export default function Certifications() {
                     <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
                       {cert.issuedDate}
                     </p>
-                    <a
-                      href={cert.verifyUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-300/20 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition hover:bg-cyan-300/30 hover:text-cyan-200"
-                    >
-                      Verify
-                      <ExternalLink size={12} />
-                    </a>
+                    {cert.verifyUrl ? (
+                      <a
+                        href={cert.verifyUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-300/20 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition hover:bg-cyan-300/30 hover:text-cyan-200"
+                      >
+                        Verify
+                        <ExternalLink size={12} />
+                      </a>
+                    ) : (
+                      <span className="text-xs text-slate-500">No verification available</span>
+                    )}
                   </div>
                 </div>
               </GlassCard>

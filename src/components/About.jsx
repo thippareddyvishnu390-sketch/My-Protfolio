@@ -12,6 +12,8 @@ import {
 } from 'lucide-react'
 import SectionTitle from './SectionTitle'
 import GlassCard from './GlassCard'
+import { useIsMobile } from '../hooks/useIsMobile'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const interests = [
   { label: 'Web Development', icon: Globe },
@@ -34,6 +36,9 @@ const vibe = [
 ]
 
 export default function About() {
+  const isMobile = useIsMobile()
+  const prefersReducedMotion = useReducedMotion()
+  const disableAnimations = isMobile || prefersReducedMotion
   return (
     <section id="about" className="px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-6xl">
@@ -45,11 +50,10 @@ export default function About() {
 
         <div className="grid gap-5">
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={disableAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
+            whileInView={disableAnimations ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.4 }}
-            style={{ willChange: 'transform, opacity' }}
+            transition={disableAnimations ? { duration: 0 } : { duration: 0.4 }}
           >
             <GlassCard className="h-full rounded-3xl p-6 sm:p-8">
               <h3 className="text-xl font-semibold text-white sm:text-2xl">
@@ -83,13 +87,13 @@ export default function About() {
                     const Icon = v.icon
                     return (
                       <motion.div
-                        key={v.label}
-                        initial={{ opacity: 0, x: 8 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.28, delay: i * 0.04 }}
-                        className="flex items-start gap-3"
-                      >
+                          key={v.label}
+                          initial={disableAnimations ? { opacity: 1, x: 0 } : { opacity: 0, x: 8 }}
+                          whileInView={disableAnimations ? undefined : { opacity: 1, x: 0 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={disableAnimations ? { duration: 0 } : { duration: 0.28, delay: i * 0.04 }}
+                          className="flex items-start gap-3"
+                        >
                         <span className="rounded-lg border border-white/10 bg-white/5 p-2 text-cyan-300">
                           <Icon size={16} />
                         </span>

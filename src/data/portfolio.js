@@ -1,7 +1,24 @@
 import { Code, GitBranch, Users, Globe, Workflow, Sparkles, Cloud } from 'lucide-react'
 import IBMPdf from '../assets/certs/IBMDesign20260125-31-kfg1r4 (1).pdf'
 import GenAIPdf from '../assets/certs/GettingStartedwithGenerativeAI_Badge20260216-35-z3bdai (1).pdf'
-import AIWebDevPdf from '../assets/certs/AI Web Development Internship_internship_certificate.pdf'
+import AIWebDevPdf from '../components/AI Web Development Internship_internship_certificate.pdf'
+
+// Auto-discover PDFs placed in src/assets/certs so we don't need to import each filename manually.
+// Vite supports `import.meta.glob` with `as: 'url'` to get public URLs for assets.
+const pdfModules = import.meta.glob('../assets/certs/*.pdf', { eager: true, as: 'url' })
+function _normalize(s) {
+  return String(s).replace(/\s+/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase()
+}
+function findPdfByTitle(title) {
+  const want = _normalize(title)
+  for (const p in pdfModules) {
+    const fname = p.split('/').pop()
+    if (_normalize(fname).includes(want) || want.includes(_normalize(fname).replace('pdf',''))) {
+      return pdfModules[p]
+    }
+  }
+  return null
+}
 
 export const profile = {
   name: 'Vishnu',
@@ -86,7 +103,8 @@ export const certifications = [
     issuer: 'AI Web Development',
     issuedDate: '2026',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=600&h=400&fit=crop',
-    verifyUrl: AIWebDevPdf,
+    // Prefer an explicitly imported PDF (if placed in src/components), then discovered PDFs, then the image URL.
+    verifyUrl: AIWebDevPdf ?? findPdfByTitle('AI Web Development Internship') ?? 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=600&h=400&fit=crop',
   },
 ]
 

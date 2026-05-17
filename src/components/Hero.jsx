@@ -4,9 +4,12 @@ import GlassCard from './GlassCard'
 import { profile, socialLinks } from '../data/portfolio'
 import profileImage from './vishnu.jpg.jpeg'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion()
+  const isMobile = useIsMobile()
+  const disableAnimations = prefersReducedMotion || isMobile
 
   return (
     <section
@@ -17,40 +20,40 @@ export default function Hero() {
 
       <div className="mx-auto grid w-full max-w-6xl gap-8 md:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <motion.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 28, scale: 0.96 }}
+          initial={disableAnimations ? { opacity: 1 } : { opacity: 0, y: 28, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={
-            prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.05 }
+            disableAnimations ? { duration: 0 } : { duration: 0.5, delay: 0.05 }
           }
           className="order-1 relative mx-auto w-full max-w-[20rem] sm:max-w-[24rem] lg:order-2 lg:max-w-[28rem]"
         >
           <div className="relative" style={!prefersReducedMotion ? { willChange: 'transform' } : {}}>
-            {!prefersReducedMotion && (
+            {!disableAnimations && (
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
                 className="relative"
-                style={{ willChange: 'transform' }}
+                style={!isMobile ? { willChange: 'transform' } : {}}
               >
-                <div className="pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,_rgba(56,189,248,0.35)_0%,_rgba(45,212,191,0.18)_42%,_transparent_72%)] blur-2xl" />
+                <div className={`pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,_rgba(56,189,248,0.35)_0%,_rgba(45,212,191,0.18)_42%,_transparent_72%)] ${isMobile ? 'blur-sm' : 'blur-2xl'}`} />
               </motion.div>
             )}
 
-            <div className="relative rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-[0_26px_65px_rgba(2,6,23,0.5)] backdrop-blur-xl sm:p-4">
+            <div className={`relative rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-[0_26px_65px_rgba(2,6,23,0.5)] ${isMobile ? 'backdrop-blur-sm' : 'backdrop-blur-xl'} sm:p-4`}>
               <motion.div
-                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
+                whileHover={disableAnimations ? {} : { scale: 1.02 }}
+                transition={{ duration: disableAnimations ? 0 : 0.2, ease: 'easeOut' }}
                 className="group relative overflow-hidden rounded-full"
               >
-                <div className="pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(from_180deg_at_50%_50%,rgba(34,211,238,0.9),rgba(45,212,191,0.75),rgba(56,189,248,0.9),rgba(34,211,238,0.9))] opacity-80 blur-[2px]" />
+                <div className={`pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(from_180deg_at_50%_50%,rgba(34,211,238,0.9),rgba(45,212,191,0.75),rgba(56,189,248,0.9),rgba(34,211,238,0.9))] opacity-80 ${isMobile ? 'blur-[1px]' : 'blur-[2px]'}`} />
                 <div className="relative m-1 overflow-hidden rounded-full border border-white/30 bg-slate-900/20 aspect-square">
                   <img
                     src={profileImage}
                     alt="Vishnu profile portrait"
-                    loading="eager"
+                    loading={isMobile ? 'lazy' : 'eager'}
                     decoding="async"
-                    fetchPriority="high"
-                    className="h-full w-full object-cover object-center shadow-[0_20px_45px_rgba(2,6,23,0.45)]"
+                    fetchPriority={isMobile ? 'low' : 'high'}
+                    className={`h-full w-full object-cover object-center ${isMobile ? 'shadow-[0_8px_20px_rgba(2,6,23,0.25)]' : 'shadow-[0_20px_45px_rgba(2,6,23,0.45)]'}`}
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/18 via-transparent to-cyan-200/8" />
                 </div>

@@ -20,10 +20,8 @@ body,
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
-  /* GPU acceleration and smooth scrolling */
   -webkit-font-smoothing: antialiased;
   -webkit-backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
 }
 
 body {
@@ -36,7 +34,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* Improve scrolling performance */
   -webkit-overflow-scrolling: touch;
-  will-change: scroll-position;
 }
 
 h1,
@@ -58,10 +55,10 @@ a {
     rgba(15, 23, 42, 0.45)
   );
   box-shadow:
-    0 10px 30px rgba(2, 6, 23, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-  will-change: backdrop-filter;
+    0 6px 18px rgba(2, 6, 23, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(4px);
+  will-change: auto;
 }
 
 .hero-gradient {
@@ -71,7 +68,7 @@ a {
     radial-gradient(circle at 62% 80%, rgba(56, 189, 248, 0.2), transparent 36%),
     #020617;
   background-size: 125% 125%;
-  animation: heroAurora 11s ease-in-out infinite alternate;
+  animation: heroAurora 22s ease-in-out infinite alternate;
   will-change: auto;
   contain: layout style paint;
 }
@@ -120,6 +117,15 @@ a {
 
 header {
   contain: layout style;
-  will-change: backdrop-filter;
-  backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(6px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient {
+    animation: none !important;
+  }
+  .glass, header {
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
 }
