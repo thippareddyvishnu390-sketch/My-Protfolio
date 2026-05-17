@@ -8,8 +8,17 @@ export function useReducedMotion() {
     setPrefersReducedMotion(mq.matches)
 
     const handleChange = (e) => setPrefersReducedMotion(e.matches)
-    mq.addEventListener('change', handleChange)
-    return () => mq.removeEventListener('change', handleChange)
+    // Older browsers (and some mobile browsers) use addListener/removeListener
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handleChange)
+      return () => mq.removeEventListener('change', handleChange)
+    }
+
+    if (typeof mq.addListener === 'function') {
+      mq.addListener(handleChange)
+      return () => mq.removeListener(handleChange)
+    }
+    return undefined
   }, [])
 
   return prefersReducedMotion

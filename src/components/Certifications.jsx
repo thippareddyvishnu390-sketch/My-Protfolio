@@ -38,18 +38,18 @@ export default function Certifications() {
                     className="block h-full w-full"
                   >
                     {cert.verifyUrl && String(cert.verifyUrl).toLowerCase().endsWith('.pdf') ? (
-                      <object
-                        data={cert.verifyUrl}
-                        type="application/pdf"
-                        className="h-full w-full bg-transparent"
-                      >
-                        <div className="flex h-full w-full items-center justify-center bg-slate-900">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-900 via-slate-900/90 to-cyan-950/35 p-4 text-center">
+                        <div>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-14 w-14 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M6 2h7l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" />
                             <path d="M13 3v5h5" fillOpacity="0.15" />
                           </svg>
+                          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
+                            Certificate PDF
+                          </p>
+                          <p className="mt-1 text-xs text-slate-300">Tap to open and view</p>
                         </div>
-                      </object>
+                      </div>
                     ) : (
                       <img
                         src={cert.image}

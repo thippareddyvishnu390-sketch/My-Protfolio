@@ -129,3 +129,92 @@ header {
     box-shadow: none !important;
   }
 }
+
+/* Compact tuning for very small phones (320px-375px). */
+@media (max-width: 375.98px) {
+  .phone-compact header > div {
+    height: 3.25rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
+
+  .phone-compact header a span:last-child {
+    font-size: 0.86rem;
+    letter-spacing: 0.03em;
+  }
+
+  .phone-compact #home {
+    min-height: calc(100svh - 3.25rem);
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    padding-top: 3.1rem;
+    padding-bottom: 2.7rem;
+  }
+
+  .phone-compact #home h1 {
+    font-size: 1.85rem;
+    line-height: 1.18;
+  }
+
+  .phone-compact #home p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .phone-compact #about,
+  .phone-compact #skills,
+  .phone-compact #projects,
+  .phone-compact #certifications,
+  .phone-compact #resume,
+  .phone-compact #contact,
+  .phone-compact footer {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    padding-top: 2.6rem;
+    padding-bottom: 2.6rem;
+  }
+
+  .phone-compact #about h2,
+  .phone-compact #skills h2,
+  .phone-compact #projects h2,
+  .phone-compact #certifications h2,
+  .phone-compact #resume h2,
+  .phone-compact #contact h2 {
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .phone-compact #about .mb-8,
+  .phone-compact #skills .mb-8,
+  .phone-compact #projects .mb-8,
+  .phone-compact #certifications .mb-8,
+  .phone-compact #resume .mb-8,
+  .phone-compact #contact .mb-8 {
+    margin-bottom: 1.4rem;
+  }
+
+  .phone-compact #contact form {
+    gap: 0.95rem;
+  }
+
+  .phone-compact #contact input,
+  .phone-compact #contact textarea,
+  .phone-compact #contact button,
+  .phone-compact #contact a,
+  .phone-compact footer a,
+  .phone-compact footer button {
+    min-height: 2.6rem;
+  }
+
+  .phone-compact #contact .rounded-2xl,
+  .phone-compact #certifications .rounded-2xl,
+  .phone-compact #skills .rounded-2xl,
+  .phone-compact #resume .rounded-2xl,
+  .phone-compact footer .rounded-2xl {
+    border-radius: 0.9rem;
+  }
+
+  .phone-compact #certifications .h-44 {
+    height: 10.25rem;
+  }
+}
